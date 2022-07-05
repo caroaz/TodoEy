@@ -4,7 +4,7 @@ import UIKit
 
 class ViewController: UIViewController {
     
-   
+    
     var tableView = UITableView()
     var tasks = [Items]()
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("items.plist")
@@ -15,13 +15,13 @@ class ViewController: UIViewController {
         let addButton = UIBarButtonItem(barButtonSystemItem: .add , target: self, action: #selector(ViewController.addButtonTapped))
         addButton.tintColor = .white
         self.navigationItem.setRightBarButtonItems([addButton], animated: true)
-
+        
         configureTableView()
         setTableViewDelegates()
         
-//        carga nuestros datos
+        //        carga nuestros datos
         loadItems()
-     
+        
     }
     
     
@@ -39,7 +39,7 @@ class ViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
     }
-//    MARK: add new elements
+    //    MARK: add new elements
     @objc func addButtonTapped(BtnPsgVar: UIBarButtonItem){
         var textField = UITextField()
         let alert = UIAlertController(title: "Add New Todoey Item", message: "", preferredStyle: .alert)
@@ -49,7 +49,7 @@ class ViewController: UIViewController {
             newItem.title = textField.text!
             self.tasks.append(newItem)
             
-          saveItems()
+            saveItems()
         }
         alert.addTextField{(alertTextField) in
             alertTextField.placeholder = "create New Item"
@@ -63,27 +63,27 @@ class ViewController: UIViewController {
     
     func saveItems (){
         
-//        guardamos los datos en un plist
+        //        guardamos los datos en un plist
         let encoder = PropertyListEncoder()
-         do{
-             let data = try encoder.encode(self.tasks)
-             try data.write(to : dataFilePath!)
-         }catch{
-             print("Error")
-         }
+        do{
+            let data = try encoder.encode(self.tasks)
+            try data.write(to : dataFilePath!)
+        }catch{
+            print("Error")
+        }
         tableView.reloadData()
     }
     func loadItems () {
         
-//        los datos son igual a los datos guardados en esa url
+        //        los datos son igual a los datos guardados en esa url
         if let data = try? Data(contentsOf: dataFilePath!){
-//            decofica los datos guardados en plist y devuelve los datos en un array de items [Items]
+            //            decofica los datos guardados en plist y devuelve los datos en un array de items [Items]
             let decoder = PropertyListDecoder()
             do {
-            tasks = try decoder.decode([Items].self, from: data)
+                tasks = try decoder.decode([Items].self, from: data)
             }catch {
-                    print("error")
-                }
+                print("error")
+            }
         }
     }
     
@@ -108,7 +108,6 @@ extension ViewController: UITableViewDataSource{
     }
     
 }
-
 extension ViewController: UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
